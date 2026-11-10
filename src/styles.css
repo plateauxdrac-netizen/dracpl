@@ -773,6 +773,89 @@ html {
     margin: 7px 0;
 }
 
+.contact-info-card {
+    margin-bottom: 20px;
+    padding: 26px;
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--gold);
+    border-radius: 6px;
+    background: var(--background);
+    box-shadow: var(--soft-shadow);
+}
+
+.contact-info-eyebrow {
+    margin: 0 0 8px;
+    color: var(--muted-foreground);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+}
+
+.contact-info-title {
+    max-width: 420px;
+    color: var(--primary);
+    font-family: var(--font-serif);
+    font-size: 22px;
+}
+
+.contact-info-region {
+    margin: 7px 0 20px;
+    color: var(--muted-foreground);
+    font-size: 14px;
+}
+
+.contact-info-list {
+    display: grid;
+    gap: 16px;
+}
+
+.contact-info-item {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+}
+
+.contact-info-icon {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--secondary);
+    color: var(--primary);
+}
+
+.contact-info-label {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--muted-foreground);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.contact-info-item p,
+.contact-info-item a {
+    margin: 0;
+    color: var(--foreground);
+    font-size: 14px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.contact-info-item a {
+    text-decoration: none;
+}
+
+.contact-info-item a:hover {
+    color: var(--muted-foreground);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 .quick-links {
     display: flex;
     gap: 12px;

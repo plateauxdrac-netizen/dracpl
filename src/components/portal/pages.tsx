@@ -20,6 +20,7 @@ import {
   BookOpen,
   Globe,
   Mail,
+  Phone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -1166,35 +1167,58 @@ export function StaticPage({
                 <ContactForm />
               </div>
               <div>
-                <div className="info-band mt-0">
-                  <h3>Direction régionale des arts et de la culture</h3>
-                  <p className="flex items-center gap-2">
-                    <MapPin size={16} />
-                    Région des Plateaux, Togo
-                  </p>
-                  <p>Adresse : Atakpamé, von en face la STE PALMART </p>
-                  <p>Téléphone : +228 24400107</p>
-                  <p>E-mail : dracplateaux2004@gmail.com</p>
-                  <p>Lun à Vendredi, 07h00-12h00, 14h00-17h00</p>
-                </div>
-                <div className="map-panel">
-                  <div>
-                    <MapPin className="mx-auto mb-4" />
-                    <h3 className="font-serif text-xl text-primary">Région des Plateaux</h3>
-                    <p className="text-sm text-muted-foreground my-3">
-                      La localisation précise des bureaux sera ajoutée après confirmation.
-                    </p>
-                    <a
-                      href="https://www.openstreetmap.org/search?query=Atakpame%20Togo"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="section-link"
-                    >
-                      Découvrir Atakpamé sur la carte
-                      <ArrowRight size={14} />
-                    </a>
+                <div className="contact-info-card">
+                  <p className="contact-info-eyebrow">Nous trouver et nous contacter</p>
+                  <h3 className="contact-info-title">
+                    Direction régionale des arts et de la culture
+                  </h3>
+                  <p className="contact-info-region">Région des Plateaux · Togo</p>
+                  <div className="contact-info-list">
+                    <div className="contact-info-item">
+                      <span className="contact-info-icon">
+                        <MapPin size={18} aria-hidden="true" />
+                      </span>
+                      <div>
+                        <span className="contact-info-label">Adresse</span>
+                        <p>Atakpamé, von en face la STE PALMART</p>
+                      </div>
+                    </div>
+                    <div className="contact-info-item">
+                      <span className="contact-info-icon">
+                        <Phone size={18} aria-hidden="true" />
+                      </span>
+                      <div>
+                        <span className="contact-info-label">Téléphone</span>
+                        <a href="tel:+22824400107">+228 24 40 01 07</a>
+                      </div>
+                    </div>
+                    <div className="contact-info-item">
+                      <span className="contact-info-icon">
+                        <Mail size={18} aria-hidden="true" />
+                      </span>
+                      <div>
+                        <span className="contact-info-label">E-mail</span>
+                        <a href="mailto:dracplateaux2004@gmail.com">
+                          dracplateaux2004@gmail.com
+                        </a>
+                      </div>
+                    </div>
+                    <div className="contact-info-item">
+                      <span className="contact-info-icon">
+                        <Clock size={18} aria-hidden="true" />
+                      </span>
+                      <div>
+                        <span className="contact-info-label">Horaires d’ouverture</span>
+                        <p>
+                          Lundi au vendredi
+                          <br />
+                          07h00–12h00 · 14h00–17h00
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                <OfficeMap />
                 <div className="mt-5">
                   <h3 className="text-primary mb-3">Retrouvez-nous sur les réseaux</h3>
                   <SocialLinks />
