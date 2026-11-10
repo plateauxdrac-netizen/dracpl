@@ -7,3 +7,4 @@
 - [x] Local VS Code workflow: `.env` support, `.env.example`, README steps.
 - [ ] Verify the connected Hygraph workspace and published content in the preview.
 - [x] Prevent a temporary Hygraph failure or loading state from appearing as a missing announcement.
+- [x] Show the real Google map on the contact page from the shared Google Maps link.
