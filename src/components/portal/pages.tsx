@@ -31,6 +31,7 @@ import {
   type ContentItem,
 } from "@/lib/portal/content";
 import { PageBanner, ContactBand, SocialLinks } from "./chrome";
+import { OfficeMap } from "./map";
 import type { ContentSource } from "@/lib/portal/source";
 import { ContentUnavailable, ContentUnavailableNotice } from "./loading";
 import { usePortalCatalog } from "@/lib/portal/queries";
@@ -1180,7 +1181,9 @@ export function StaticPage({
                   <div>
                     <MapPin className="mx-auto mb-4" />
                     <h3 className="font-serif text-xl text-primary">Région des Plateaux</h3>
-                    
+                    <p className="text-sm text-muted-foreground my-3">
+                      La localisation précise des bureaux sera ajoutée après confirmation.
+                    </p>
                     <a
                       href="https://www.openstreetmap.org/search?query=Atakpame%20Togo"
                       target="_blank"
