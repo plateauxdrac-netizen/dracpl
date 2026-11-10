@@ -201,7 +201,7 @@ export function ArchivePage({
             </div>
           )}
           <Pagination page={page} setPage={setPage} total={Math.ceil(filtered.length / pageSize)} />
-          {source === "demo" &&
+          {source === "demo" && !unavailable &&
             (kind === "actualites" ||
               kind === "annonces" ||
               kind === "agenda" ||
