@@ -31,6 +31,7 @@ import {
   type ContentItem,
 } from "@/lib/portal/content";
 import { PageBanner, ContactBand, SocialLinks } from "./chrome";
+import { OfficeMap } from "./map";
 import type { ContentSource } from "@/lib/portal/source";
 import { ContentUnavailable, ContentUnavailableNotice } from "./loading";
 import { usePortalCatalog } from "@/lib/portal/queries";
@@ -1168,24 +1169,7 @@ export function StaticPage({
                   <p>E-mail : à confirmer.</p>
                   <p>Horaires d’accueil : à confirmer.</p>
                 </div>
-                <div className="map-panel">
-                  <div>
-                    <MapPin className="mx-auto mb-4" />
-                    <h3 className="font-serif text-xl text-primary">Région des Plateaux</h3>
-                    <p className="text-sm text-muted-foreground my-3">
-                      La localisation précise des bureaux sera ajoutée après confirmation.
-                    </p>
-                    <a
-                      href="https://www.openstreetmap.org/search?query=Atakpame%20Togo"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="section-link"
-                    >
-                      Découvrir Atakpamé sur la carte
-                      <ArrowRight size={14} />
-                    </a>
-                  </div>
-                </div>
+                <OfficeMap />
                 <div className="mt-5">
                   <h3 className="text-primary mb-3">Retrouvez-nous sur les réseaux</h3>
                   <SocialLinks />
