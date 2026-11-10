@@ -201,7 +201,8 @@ export function ArchivePage({
             </div>
           )}
           <Pagination page={page} setPage={setPage} total={Math.ceil(filtered.length / pageSize)} />
-          {source === "demo" && !unavailable &&
+          {source === "demo" &&
+            !unavailable &&
             (kind === "actualites" ||
               kind === "annonces" ||
               kind === "agenda" ||
@@ -236,6 +237,11 @@ function GalleryViewer() {
     { src: images.dance, label: "Danses et expressions collectives — illustration" },
     { src: images.heritage, label: "Paysages des Plateaux — illustration" },
     { src: images.exhibition, label: "Rencontre autour des arts visuels — illustration" },
+    { src: images.education, label: "Transmission et apprentissage — illustration" },
+    {
+      src: images.direction,
+      label: "La Direction régionale des arts et de la culture des Plateaux — illustration",
+    },
   ];
   const [index, setIndex] = useState<number | null>(null);
   useEffect(() => {
@@ -795,7 +801,6 @@ function ContactForm() {
 }
 
 
-
 export function StaticPage({
   slug,
   galeries,
@@ -847,8 +852,8 @@ export function StaticPage({
                   </div>
                 </div>
                 <img
-                  src={images.exhibition}
-                  alt="Illustration de rencontre culturelle"
+                  src={images.direction}
+                  alt="La direction régionale des arts et de la culture des Plateaux — illustration"
                   loading="lazy"
                   width={1200}
                   height={800}
@@ -932,6 +937,9 @@ export function StaticPage({
               </div>
             </>
           )}
+
+
+
           {slug === "organisation" && (
             <>
               <div className="prose">
@@ -1163,18 +1171,16 @@ export function StaticPage({
                     <MapPin size={16} />
                     Région des Plateaux, Togo
                   </p>
-                  <p>Adresse : en attente de confirmation officielle.</p>
-                  <p>Téléphone : à confirmer.</p>
-                  <p>E-mail : à confirmer.</p>
-                  <p>Horaires d’accueil : à confirmer.</p>
+                  <p>Adresse : Atakpamé, von en face la STE PALMART </p>
+                  <p>Téléphone : +228 24400107</p>
+                  <p>E-mail : dracplateaux2004@gmail.com</p>
+                  <p>Lun à Vendredi, 07h00-12h00, 14h00-17h00</p>
                 </div>
                 <div className="map-panel">
                   <div>
                     <MapPin className="mx-auto mb-4" />
                     <h3 className="font-serif text-xl text-primary">Région des Plateaux</h3>
-                    <p className="text-sm text-muted-foreground my-3">
-                      La localisation précise des bureaux sera ajoutée après confirmation.
-                    </p>
+                    
                     <a
                       href="https://www.openstreetmap.org/search?query=Atakpame%20Togo"
                       target="_blank"

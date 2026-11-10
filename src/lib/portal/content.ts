@@ -6,6 +6,7 @@ import education from "@/assets/education.jpg";
 import percussions from "@/assets/percussions.jpg";
 import paysages from "@/assets/paysages.jpg";
 import memoire from "@/assets/memoire.jpg";
+import direction from "@/assets/la direction.png";
 export const images = {
   dance,
   heritage,
@@ -15,6 +16,7 @@ export const images = {
   percussions,
   paysages,
   memoire,
+  direction,
 };
 export type ContentKind =
   "actualites" | "annonces" | "agenda" | "projets" | "galeries" | "videos" | "artistes";
