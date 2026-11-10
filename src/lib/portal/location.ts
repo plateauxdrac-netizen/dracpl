@@ -18,3 +18,19 @@ export const officeLocation = {
 export function mapsSearchUrl(query: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
+
+// Builds the Google Maps Embed API address for the shared location.
+// Returns an empty string when no browser key is configured, so the page can
+// fall back to a plain link instead of loading a map Google will refuse.
+export function mapsEmbedUrl(browserKey: string | undefined): string {
+  const key = typeof browserKey === "string" ? browserKey.trim() : "";
+  if (!key) return "";
+  const params = new URLSearchParams({
+    key,
+    q: `${officeLocation.latitude},${officeLocation.longitude}`,
+    zoom: String(officeLocation.zoom),
+    language: "fr",
+    region: "TG",
+  });
+  return `https://www.google.com/maps/embed/v1/place?${params.toString()}`;
+}

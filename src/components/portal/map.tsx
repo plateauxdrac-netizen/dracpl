@@ -1,21 +1,12 @@
 import { ArrowRight, MapPin } from "lucide-react";
-import { officeLocation } from "@/lib/portal/location";
+import { mapsEmbedUrl, officeLocation } from "@/lib/portal/location";
 
 // Referrer-restricted browser key, safe to embed in the page. Bracket access
 // because the project keeps noPropertyAccessFromIndexSignature enabled.
 const browserKey = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"];
 
 function embedUrl(): string {
-  const key = typeof browserKey === "string" ? browserKey.trim() : "";
-  if (!key) return "";
-  const params = new URLSearchParams({
-    key,
-    q: `${officeLocation.latitude},${officeLocation.longitude}`,
-    zoom: String(officeLocation.zoom),
-    language: "fr",
-    region: "TG",
-  });
-  return `https://www.google.com/maps/embed/v1/place?${params.toString()}`;
+  return mapsEmbedUrl(browserKey);
 }
 
 export function OfficeMap() {
