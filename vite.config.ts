@@ -12,7 +12,7 @@ const envFile = new URL("./.env", import.meta.url);
 if (existsSync(envFile)) process.loadEnvFile(envFile);
 
 export default defineConfig({
-  nitro: { preset: "node-server" },
+  nitro: { preset: process.env["NITRO_PRESET"] || "node-server" },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

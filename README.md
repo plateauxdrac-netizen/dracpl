@@ -47,6 +47,10 @@ npm start
 
 For Plesk, use a plan with Node.js application support, set the application root to the project, and configure the app to run `npm start` with the production Node.js version. Build the project after deploying its source and dependencies, then restart the application. Add `HYGRAPH_ENDPOINT` and any other required settings in Plesk's environment-variable settings; do not upload a local `.env` file. Confirm that your hosting plan's Node.js integration supports launching this Nitro server and listening on its assigned port.
 
+## Deploy to Vercel
+
+Vercel must build this app as a server-rendered Nitro app, not as a static Vite site. The included `vercel.json` selects the Vercel Build Output API and runs `npm run build:vercel`, which produces `.vercel/output` with the server function and static assets. Set `HYGRAPH_ENDPOINT` (and any model overrides you use) in Vercel's Project Settings → Environment Variables.
+
 ## Connect your own content
 
 Without any settings the portal shows clearly labelled demonstration content. To read your own publications, copy `.env.example` to `.env` and fill in the address of your content workspace:
