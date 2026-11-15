@@ -87,13 +87,24 @@ function assets(value: Asset[] | Asset | undefined): Asset[] {
   return Array.isArray(value) ? value : [value];
 }
 // Turns a stored choice like « musiqueEtDanse » into « Musique et danse ».
+const FRENCH_LABELS: Record<string, string> = {
+  appelaprojets: "Appel à projets",
+  appelacandidatures: "Appel à candidatures",
+  expire: "Expiré",
+  ferme: "Fermé",
+  ouvert: "Ouvert",
+  encours: "En cours",
+};
 function humanize(value: string): string {
   const spaced = value
     .replace(/([a-zà-ÿ])([A-ZÀ-Þ])/g, "$1 $2")
+    .replace(/([A-ZÀ-Þ])([A-ZÀ-Þ][a-zà-ÿ])/g, "$1 $2")
     .replace(/[_-]+/g, " ")
     .toLowerCase()
     .trim();
-  return spaced ? spaced.charAt(0).toUpperCase() + spaced.slice(1) : "";
+  if (!spaced) return "";
+  const lookupKey = spaced.replace(/\s+/g, "");
+  return FRENCH_LABELS[lookupKey] ?? spaced.charAt(0).toUpperCase() + spaced.slice(1);
 }
 
 const ISO = /^\d{4}-\d{2}-\d{2}/;
@@ -275,7 +286,7 @@ export function mapHygraphRecord(
     slug: String(record.slug ?? "") || `hygraph-${index}`,
     title: toText(String(record.titre ?? record.title ?? "")) || "Sans titre",
     category:
-      decode(String(record.categorie ?? record.category ?? "")) ||
+      humanize(decode(String(record.categorie ?? record.category ?? ""))) ||
       humanize(String(rawCategory)) ||
       "Plateaux",
     date: iso ? formatFrenchDate(iso) : "",
@@ -298,7 +309,7 @@ export function mapHygraphRecord(
     .filter((document): document is { url: string; name: string } => document !== null);
   if (documents.length) item.documents = documents;
   if (kind === "annonces") {
-    const status = decode(String(record.statut ?? record.status ?? ""));
+    const status = humanize(decode(String(record.statut ?? record.status ?? "")));
     if (status) item.status = status;
   }
   if (kind === "videos") {

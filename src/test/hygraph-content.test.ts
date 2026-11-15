@@ -78,6 +78,19 @@ describe("Hygraph editorial content", () => {
     expect(result.items[0]?.gallery).toBeUndefined();
   });
 
+  it("turns Hygraph choice values into readable French labels", () => {
+    const item = mapHygraphRecord(
+      { ...news, categorie: "appelAProjets", statut: "expire" },
+      "annonces",
+      0,
+    );
+    expect(item.category).toBe("Appel à projets");
+    expect(item.status).toBe("Expiré");
+    expect(
+      mapHygraphRecord({ ...news, categories: ["APPELAPROJETS"] }, "annonces", 0).category,
+    ).toBe("Appel à projets");
+  });
+
   it("preserves the supplied event town and time without inventing missing details", () => {
     const item = mapHygraphRecord(
       { ...news, ville: "Kpalimé", horaire: "14 h 00", categorie: "Musique" },

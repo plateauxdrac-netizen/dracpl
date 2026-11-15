@@ -5,6 +5,10 @@
 - [x] Verify navigation, search and mobile presentation.
 - [x] Finish and test the optional Hygraph reading layer for news and events, with demonstration content as fallback.
 - [x] Local VS Code workflow: `.env` support, `.env.example`, README steps.
-- [ ] Verify the connected Hygraph workspace and published content in the preview.
+- [x] Verify the connected Hygraph workspace and published content in the preview.
 - [x] Prevent a temporary Hygraph failure or loading state from appearing as a missing announcement.
 - [x] Show the real Google map on the contact page from the shared Google Maps link.
+- [x] Audit the main pages and mobile navigation for visible or runtime problems.
+- [x] Add restrained entrance, hover and interaction motion with reduced-motion support.
+- [x] Fix the local map error, raw CMS labels and search/menu interaction issues found during the audit.
+- [x] Recheck the main user flows, automated tests and preview build.

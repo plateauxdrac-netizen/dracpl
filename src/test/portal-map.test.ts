@@ -14,4 +14,10 @@ describe("Google Maps embed for the contact page", () => {
     expect(mapsEmbedUrl(undefined)).toBe("");
     expect(mapsEmbedUrl("   ")).toBe("");
   });
+
+  it("uses the plain map link locally instead of an unauthorized Google embed", () => {
+    expect(mapsEmbedUrl("demo-browser-key", "localhost")).toBe("");
+    expect(mapsEmbedUrl("demo-browser-key", "127.0.0.1")).toBe("");
+    expect(mapsEmbedUrl("demo-browser-key", "dracpl.lovable.app")).toContain("google.com/maps");
+  });
 });
