@@ -4,7 +4,12 @@
 //     nitro (build-only), VITE_* env injection, @ path alias,
 //     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
+import { existsSync } from "node:fs";
+import process from "node:process";
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+
+const envFile = new URL("./.env", import.meta.url);
+if (existsSync(envFile)) process.loadEnvFile(envFile);
 
 export default defineConfig({
   nitro: { preset: "node-server" },

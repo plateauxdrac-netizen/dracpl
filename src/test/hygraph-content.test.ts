@@ -99,6 +99,28 @@ describe("Hygraph editorial content", () => {
     expect((await resolvePortalItems("annonces", {})).unavailable).toBeUndefined();
   });
 
+  it("allows ten seconds for each Hygraph request and reports timeouts clearly", async () => {
+    const timeout = vi.spyOn(AbortSignal, "timeout");
+    try {
+      vi.stubGlobal("fetch", vi.fn(async () => reply({ annonces: [news] })));
+      const items = await loadFromHygraph(endpoint, "annonces");
+      expect(items?.[0]?.slug).toBe("nouvelle-culturelle");
+      expect(timeout).toHaveBeenCalledWith(10_000);
+    } finally {
+      timeout.mockRestore();
+    }
+
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new DOMException("The operation was aborted due to timeout", "TimeoutError");
+      }),
+    );
+    await expect(loadFromHygraph(endpoint, "annonces")).rejects.toThrow(
+      "Hygraph request timed out after 10000 ms",
+    );
+  });
+
   it("keeps published content after a temporary CMS failure and retries the failed fallback", async () => {
     let now = 0;
     vi.spyOn(Date, "now").mockImplementation(() => now);

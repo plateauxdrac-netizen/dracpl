@@ -58,6 +58,7 @@ cp .env.example .env
 - **Hygraph** — Project settings → API Access → Content API: copy the Content Delivery API URL into `HYGRAPH_ENDPOINT`. Publish at least one item per section (only published content is read). Model API IDs: `actualites`, `evenements`, `annonces`, `galeries`, `videos`. If Hygraph is not configured or has no published content, the portal uses its labelled demonstration content.
 
 `.env` is ignored by git and never shared. On the hosted site the same names are filled in as project secrets, so nothing needs to be written into the code.
+Locally, `.env` is loaded for both `npm run dev` and `npm start`; these server-side settings are not exposed to the browser.
 
 ## Where things live
 

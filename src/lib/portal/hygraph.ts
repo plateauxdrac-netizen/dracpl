@@ -4,7 +4,7 @@
 import { images, type ContentItem, type ContentKind } from "./content";
 import { decode, formatFrenchDate, frenchDateParts, toParagraphs, toText } from "./text";
 
-const REQUEST_TIMEOUT = 2500;
+const REQUEST_TIMEOUT = 10_000;
 const FALLBACK_IMAGES = [images.dance, images.heritage, images.artisan, images.exhibition];
 
 function fallbackImage(index: number): string {
@@ -136,7 +136,13 @@ async function fetchGraph(
         cache: "no-store",
       });
     } catch (error) {
-      throw new HygraphRequestError(error instanceof Error ? error.message : String(error));
+      const message =
+        error instanceof DOMException && error.name === "TimeoutError"
+          ? `Hygraph request timed out after ${REQUEST_TIMEOUT} ms`
+          : error instanceof Error
+            ? error.message
+            : String(error);
+      throw new HygraphRequestError(message);
     }
     // Hygraph refuses request bursts with 429: wait briefly and try again instead of falling back.
     if (res.status === 429 && attempt < RATE_LIMIT_RETRIES) {
