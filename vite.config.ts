@@ -21,11 +21,7 @@ const onVercel =
   process.env["NITRO_PRESET"] === "vercel";
 
 export default defineConfig({
-<<<<<<< HEAD
-  nitro: { preset: process.env["NITRO_PRESET"] || "node-server" },
-=======
   nitro: { preset: onVercel ? "vercel" : "node-server" },
->>>>>>> ee8c0b0d516c123453a26a173f3eb25ee5d16e67
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
