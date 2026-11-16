@@ -70,10 +70,15 @@ plain Node.js server for Plesk.
      project never creates. `vercel.json` pins the build and install commands,
      and the Output Directory override has to stay off so Vercel reads
      `.vercel/output`.
-3. Add your content settings under **Settings → Environment Variables → Add
-   New…**: `HYGRAPH_ENDPOINT` (the Content API address). Without it the deployed
-   site falls back to its labelled demonstration content. Values are read on the
-   server at request time, so a change needs a redeploy to appear.
+3. Add these settings under **Settings → Environment Variables → Add New…**:
+   `HYGRAPH_ENDPOINT` (the Content API address) and `GMAIL_APP_PASSWORD` (a
+   Google App Password for `plateauxdrac@gmail.com`). Enable 2-Step
+   Verification on that Google account, then create an App Password at
+   [Google Account App Passwords](https://myaccount.google.com/apppasswords).
+   The contact form sends validated enquiries from and to that address; keep
+   the app password secret and server-side. Without `HYGRAPH_ENDPOINT` the
+   deployed site falls back to its labelled demonstration content. Changes need
+   a redeploy to appear.
 4. Deploy. Every page is rendered on Vercel Functions, including the pages that
    read your publications.
 

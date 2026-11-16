@@ -726,6 +726,7 @@ export function SearchPage({ q = "" }: { q?: string }) {
 }
 function ContactForm() {
   const [stored, setStored] = useState(false);
+  const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
   const submit = useServerFn(submitContact);
@@ -739,20 +740,26 @@ function ContactForm() {
         const form = e.currentTarget;
         const fields = new FormData(form);
         setError("");
+        setSent(false);
         setStored(false);
         setSending(true);
         try {
-          await submit({ data: {
-            name: String(fields.get("name") ?? ""),
-            email: String(fields.get("email") ?? ""),
-            subject: String(fields.get("subject") ?? ""),
-            message: String(fields.get("message") ?? ""),
-            consent: fields.get("consent") === "on",
-          } });
-          setStored(true);
+          const result = await submit({
+            data: {
+              name: String(fields.get("name") ?? ""),
+              email: String(fields.get("email") ?? ""),
+              subject: String(fields.get("subject") ?? ""),
+              message: String(fields.get("message") ?? ""),
+              consent: fields.get("consent") === "on",
+            },
+          });
+          setSent(result.emailed);
+          setStored(result.stored);
           form.reset();
         } catch {
-          setError("Votre demande n’a pas pu être enregistrée. Vos informations sont conservées dans le formulaire ; veuillez réessayer.");
+          setError(
+            "Votre message n’a pas pu être envoyé. Vos informations sont conservées dans le formulaire ; veuillez réessayer.",
+          );
         } finally {
           setSending(false);
         }
@@ -760,7 +767,15 @@ function ContactForm() {
     >
       <div className="form-grid">
         <label>
-          Nom et prénom *<input required minLength={2} maxLength={150} name="name" autoComplete="name" placeholder="Votre nom" />
+          Nom et prénom *
+          <input
+            required
+            minLength={2}
+            maxLength={150}
+            name="name"
+            autoComplete="name"
+            placeholder="Votre nom"
+          />
         </label>
         <label>
           Adresse e-mail *
@@ -805,16 +820,31 @@ function ContactForm() {
           et j’accepte l’utilisation de mes informations pour traiter ma demande.
         </span>
       </label>
-      <p className="meta mt-4">Les demandes sont enregistrées. L’envoi par e-mail n’est pas encore activé.</p>
+      <p className="meta mt-4">
+        Votre message sera envoyé à{" "}
+        <a className="underline" href={`mailto:${CONTACT_EMAIL}`}>
+          {CONTACT_EMAIL}
+        </a>
+        .
+      </p>
       <Button type="submit" disabled={sending} className="contact-submit mt-5">
-        {sending ? "Enregistrement…" : "Transmettre ma demande"}
+        {sending ? "Envoi en cours…" : "Envoyer le message"}
         <ArrowRight />
       </Button>
-      {error && <p role="alert" className="info-band text-destructive">{error}</p>}
-      {stored && (
+      {error && (
+        <p role="alert" className="info-band text-destructive">
+          {error}
+        </p>
+      )}
+      {sent && (
         <div role="status" className="info-band">
-          <h3>Votre demande a été enregistrée.</h3>
-          <p>Aucun e-mail n’a été envoyé. Pour écrire directement à la Direction : <a className="underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+          <h3>Votre message a été envoyé.</h3>
+          <p>Le service e-mail a accepté votre message pour {CONTACT_EMAIL}.</p>
+          {stored ? (
+            <p>Une copie a également été enregistrée pour la Direction.</p>
+          ) : (
+            <p>Votre e-mail a bien été envoyé, mais sa copie n’a pas pu être enregistrée.</p>
+          )}
         </div>
       )}
     </form>
@@ -1308,21 +1338,24 @@ export function StaticPage({
               <h2>Un principe de transparence</h2>
               <p>
                 Ce portail ne propose pas de compte utilisateur. Les demandes du formulaire de
-                contact sont enregistrées de manière privée pour être consultées par la Direction.
-                L’envoi automatique par e-mail n’est pas encore activé.
+                contact sont envoyées par e-mail à {CONTACT_EMAIL} et enregistrées de manière privée
+                pour être consultées par la Direction. L’acheminement des e-mails est assuré par le
+                compte Gmail de la Direction.
               </p>
               <h2>Données de contact</h2>
               <p>
                 Les nom, adresse e-mail, objet et message sont utilisés pour traiter votre demande.
-                Vous pouvez contacter la Direction à {CONTACT_EMAIL} concernant vos données.
-                Les informations définitives sur le responsable, la base légale et la durée de
+                Vous pouvez contacter la Direction à {CONTACT_EMAIL} concernant vos données. Les
+                informations définitives sur le responsable, la base légale et la durée de
                 conservation restent à préciser par la Direction.
               </p>
               <h2>Cookies et services externes</h2>
               <p>
                 Aucun outil de mesure d’audience n’a été ajouté au portail. Les polices peuvent être
-                chargées depuis un service externe. Les liens vers les plateformes sociales et
-                cartographiques ouvrent leurs propres sites, soumis à leurs politiques.
+                chargées depuis un service externe. Les coordonnées transmises par le formulaire
+                sont traitées par le compte Gmail de la Direction pour l’acheminement du message.
+                Les liens vers les plateformes sociales et cartographiques ouvrent leurs propres
+                sites, soumis à leurs politiques.
               </p>
               <h2>Vos droits</h2>
               <p>
