@@ -16,9 +16,9 @@ if (existsSync(envFile)) process.loadEnvFile(envFile);
 // the same repository can also be deployed to a plain Node.js host (Plesk,
 // 001.africa) where .output/server/index.mjs is what has to run.
 const onVercel =
-  Boolean(process.env.VERCEL) ||
-  process.env.DEPLOY_TARGET === "vercel" ||
-  process.env.NITRO_PRESET === "vercel";
+  Boolean(process.env["VERCEL"]) ||
+  process.env["DEPLOY_TARGET"] === "vercel" ||
+  process.env["NITRO_PRESET"] === "vercel";
 
 export default defineConfig({
   nitro: { preset: onVercel ? "vercel" : "node-server" },
