@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ArrowRight, MapPin } from "lucide-react";
 import { mapsEmbedUrl, officeLocation } from "@/lib/portal/location";
 
@@ -5,12 +6,10 @@ import { mapsEmbedUrl, officeLocation } from "@/lib/portal/location";
 // because the project keeps noPropertyAccessFromIndexSignature enabled.
 const browserKey = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"];
 
-function embedUrl(): string {
-  return mapsEmbedUrl(browserKey);
-}
-
 export function OfficeMap() {
-  const src = embedUrl();
+  const [hostname, setHostname] = useState<string>();
+  useEffect(() => setHostname(window.location.hostname), []);
+  const src = hostname === undefined ? "" : mapsEmbedUrl(browserKey, hostname);
   return (
     <div className="map-card">
       {src ? (
@@ -26,7 +25,8 @@ export function OfficeMap() {
         <div className="map-placeholder">
           <MapPin className="mx-auto mb-3" aria-hidden />
           <p className="text-sm text-muted-foreground">
-            La carte interactive s’affiche une fois la clé Google Maps connectée à ce projet.
+            Le lieu est disponible dans Google Maps. Utilisez le lien ci-dessous pour l’ouvrir
+            directement.
           </p>
         </div>
       )}

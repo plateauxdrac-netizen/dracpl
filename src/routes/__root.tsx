@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -12,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 
 import { MissingPage } from "@/components/portal/pages";
 import { Header, Footer } from "@/components/portal/chrome";
+import { PortalMotion } from "@/components/portal/motion";
 import { Button } from "@/components/ui/button";
 
 import logo from "../assets/logo.png";
@@ -103,6 +105,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -110,8 +113,9 @@ function RootComponent() {
       <main id="contenu"><Outlet /></main>
       <Footer /> breaks all child routes. */}
       <Header />
-      <main id="contenu"><Outlet /></main>
+      <main id="contenu" key={pathname} className="page-enter"><Outlet /></main>
       <Footer />
+      <PortalMotion />
     </QueryClientProvider>
   );
 }

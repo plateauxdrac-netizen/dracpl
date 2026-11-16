@@ -22,9 +22,10 @@ export function mapsSearchUrl(query: string) {
 // Builds the Google Maps Embed API address for the shared location.
 // Returns an empty string when no browser key is configured, so the page can
 // fall back to a plain link instead of loading a map Google will refuse.
-export function mapsEmbedUrl(browserKey: string | undefined): string {
+export function mapsEmbedUrl(browserKey: string | undefined, hostname = ""): string {
   const key = typeof browserKey === "string" ? browserKey.trim() : "";
-  if (!key) return "";
+  const localHost = ["localhost", "127.0.0.1", "::1"].includes(hostname);
+  if (!key || localHost) return "";
   const params = new URLSearchParams({
     key,
     q: `${officeLocation.latitude},${officeLocation.longitude}`,

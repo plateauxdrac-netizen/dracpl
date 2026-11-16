@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Search,
   Menu,
@@ -66,6 +66,20 @@ export function Header() {
   const [query, setQuery] = useState("");
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
+  useEffect(() => {
+    setMenu(false);
+    setSearch(false);
+  }, [pathname]);
+  useEffect(() => {
+    if (!menu && !search) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setMenu(false);
+      setSearch(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [menu, search]);
   return (
     <>
       <a href="#contenu" className="skip-link">
@@ -120,6 +134,7 @@ export function Header() {
               </Link>
             ))}
             <Button
+              type="button"
               variant="ghost"
               size="icon"
               aria-label="Ouvrir la recherche"
@@ -152,6 +167,7 @@ export function Header() {
               </label>
               <Button type="submit">Rechercher</Button>
               <Button
+                type="button"
                 variant="ghost"
                 size="icon"
                 aria-label="Fermer la recherche"
