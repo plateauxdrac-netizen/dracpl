@@ -23,6 +23,9 @@ import {
   Phone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useServerFn } from "@tanstack/react-start";
+import { CONTACT_EMAIL } from "@/lib/portal/contact";
+import { submitContact } from "@/lib/portal/contact.functions";
 import {
   content,
   images,
@@ -722,24 +725,49 @@ export function SearchPage({ q = "" }: { q?: string }) {
   );
 }
 function ContactForm() {
-  const [prepared, setPrepared] = useState(false);
-  const [message, setMessage] = useState("");
+  const [stored, setStored] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const submit = useServerFn(submitContact);
   return (
     <form
-      onSubmit={(e) => {
+      className="contact-form"
+      aria-busy={sending}
+      onSubmit={async (e) => {
         e.preventDefault();
-        setPrepared(true);
+        if (sending) return;
+        const form = e.currentTarget;
+        const fields = new FormData(form);
+        setError("");
+        setStored(false);
+        setSending(true);
+        try {
+          await submit({ data: {
+            name: String(fields.get("name") ?? ""),
+            email: String(fields.get("email") ?? ""),
+            subject: String(fields.get("subject") ?? ""),
+            message: String(fields.get("message") ?? ""),
+            consent: fields.get("consent") === "on",
+          } });
+          setStored(true);
+          form.reset();
+        } catch {
+          setError("Votre demande n’a pas pu être enregistrée. Vos informations sont conservées dans le formulaire ; veuillez réessayer.");
+        } finally {
+          setSending(false);
+        }
       }}
     >
       <div className="form-grid">
         <label>
-          Nom et prénom *<input required name="name" autoComplete="name" placeholder="Votre nom" />
+          Nom et prénom *<input required minLength={2} maxLength={150} name="name" autoComplete="name" placeholder="Votre nom" />
         </label>
         <label>
           Adresse e-mail *
           <input
             required
             type="email"
+            maxLength={254}
             name="email"
             autoComplete="email"
             placeholder="vous@exemple.com"
@@ -761,14 +789,14 @@ function ContactForm() {
             required
             rows={6}
             name="message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            minLength={10}
+            maxLength={10000}
             placeholder="Présentez votre demande…"
           />
         </label>
       </div>
       <label className="flex items-start gap-3 text-xs mt-5">
-        <input type="checkbox" required className="mt-1" />{" "}
+        <input type="checkbox" name="consent" required className="mt-1" />{" "}
         <span>
           J’ai lu la{" "}
           <Link to="/confidentialite" className="underline">
@@ -777,25 +805,16 @@ function ContactForm() {
           et j’accepte l’utilisation de mes informations pour traiter ma demande.
         </span>
       </label>
-      <p className="meta mt-4">Le formulaire de présentation n’envoie aucun message.</p>
-      <Button type="submit" className="mt-5">
-        Préparer ma demande
+      <p className="meta mt-4">Les demandes sont enregistrées. L’envoi par e-mail n’est pas encore activé.</p>
+      <Button type="submit" disabled={sending} className="contact-submit mt-5">
+        {sending ? "Enregistrement…" : "Transmettre ma demande"}
         <ArrowRight />
       </Button>
-      {prepared && (
+      {error && <p role="alert" className="info-band text-destructive">{error}</p>}
+      {stored && (
         <div role="status" className="info-band">
-          <h3>Votre demande est prête, mais n’a pas été envoyée.</h3>
-          <p>L’adresse officielle doit être confirmée avant de pouvoir contacter la Direction.</p>
-          <Button
-            variant="outline"
-            onClick={async () => {
-              try {
-                await navigator.clipboard.writeText(message);
-              } catch {}
-            }}
-          >
-            Copier mon message
-          </Button>
+          <h3>Votre demande a été enregistrée.</h3>
+          <p>Aucun e-mail n’a été envoyé. Pour écrire directement à la Direction : <a className="underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
         </div>
       )}
     </form>
@@ -1161,7 +1180,7 @@ export function StaticPage({
             </>
           )}
           {slug === "contact" && (
-            <div className="grid-2">
+            <div className="contact-layout">
               <div>
                 <h2 className="text-2xl text-primary mb-5">Parlons de votre initiative</h2>
                 <ContactForm />
@@ -1198,8 +1217,8 @@ export function StaticPage({
                       </span>
                       <div>
                         <span className="contact-info-label">E-mail</span>
-                        <a href="mailto:dracplateaux2004@gmail.com">
-                          dracplateaux2004@gmail.com
+                        <a href={`mailto:${CONTACT_EMAIL}`}>
+                          {CONTACT_EMAIL}
                         </a>
                       </div>
                     </div>
@@ -1288,15 +1307,16 @@ export function StaticPage({
             <div className="prose">
               <h2>Un principe de transparence</h2>
               <p>
-                Cette version de présentation ne crée aucun compte utilisateur et ne transmet pas
-                les messages du formulaire de contact. Les textes saisis restent dans la page
-                jusqu’à sa fermeture.
+                Ce portail ne propose pas de compte utilisateur. Les demandes du formulaire de
+                contact sont enregistrées de manière privée pour être consultées par la Direction.
+                L’envoi automatique par e-mail n’est pas encore activé.
               </p>
               <h2>Données de contact</h2>
               <p>
-                Si un service d’envoi est activé, les nom, adresse e-mail, objet et message seront
-                utilisés uniquement pour répondre à la demande. Le responsable, la base légale et la
-                durée de conservation devront être précisés avant activation.
+                Les nom, adresse e-mail, objet et message sont utilisés pour traiter votre demande.
+                Vous pouvez contacter la Direction à {CONTACT_EMAIL} concernant vos données.
+                Les informations définitives sur le responsable, la base légale et la durée de
+                conservation restent à préciser par la Direction.
               </p>
               <h2>Cookies et services externes</h2>
               <p>

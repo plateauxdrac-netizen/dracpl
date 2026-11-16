@@ -12,7 +12,7 @@
 ## Architecture
 - Keep TanStack Start routing and use lightweight semantic React markup with shared CSS; the runtime is fixed but the presentation should translate cleanly to Gutenberg.
 - Store demonstration editorial content in a browser-safe structured module and render it with shared archive and detail templates.
-- Keep contact submission client-side with an explicit unsent state until a delivery service is requested; never claim a message was delivered.
+- Validate contact enquiries in a public CSRF-protected server function and insert privately into Cloud; distinguish stored enquiries from email delivery until the sender domain is verified.
 - Read news and events through the shared server-side source module: try published Hygraph content when HYGRAPH_ENDPOINT is configured, then labelled demonstration content; read configuration only inside the server-function handler to keep runtime settings server-side.
 - Keep the same setting names available locally and hosted (a git-ignored `.env` file documented by `.env.example`, and project secrets in the hosted preview) so the portal can be developed in any editor without code changes.
 - CMS detail routes use shared TanStack Query options, explicit pending/error states and distinguish unavailable CMS fallback from confirmed missing content; temporary failures must not replace previously fetched publications with demonstration content.

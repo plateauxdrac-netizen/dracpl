@@ -1,4 +1,7 @@
 # Portal roadmap
+- [ ] Enable contact delivery to the supplied Gmail address (requires a verified sender domain).
+- [x] Store contact enquiries privately and verify a real form submission.
+- [x] Update the contact address and verify the contact page on mobile and desktop.
 - [x] Create the French design system and global header/footer.
 - [x] Build the homepage and all requested interior pages.
 - [x] Add search, filters, pagination, galleries, FAQ and contact form states.
