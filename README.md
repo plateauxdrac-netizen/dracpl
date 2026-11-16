@@ -47,6 +47,32 @@ npm start
 
 For Plesk, use a plan with Node.js application support, set the application root to the project, and configure the app to run `npm start` with the production Node.js version. Build the project after deploying its source and dependencies, then restart the application. Add `HYGRAPH_ENDPOINT` and any other required settings in Plesk's environment-variable settings; do not upload a local `.env` file. Confirm that your hosting plan's Node.js integration supports launching this Nitro server and listening on its assigned port.
 
+## Deploy to Vercel
+
+Vercel does not run a Node.js server: it needs the build to produce its own
+Build Output API artifact, which `npm run build` writes to `.vercel/output`
+when it detects a Vercel build (Vercel sets `VERCEL=1` during every build).
+That switch lives in `vite.config.ts`, so the same repository still builds the
+plain Node.js server for Plesk.
+
+1. Push this repository to GitHub, GitLab or Bitbucket, then in Vercel choose
+   **Add New… → Project** and import it.
+2. In the import screen (or later in **Settings → Build & Development**) make
+   sure:
+   - Build Command: `npm run build`
+   - Install Command: `npm install`
+   - **Output Directory: turned off / empty.** This is the setting that caused
+     `STATIC_BUILD_NO_OUT_DIR`: Vercel was looking for a `dist` folder that this
+     project never creates. `vercel.json` pins the build and install commands,
+     and the Output Directory override has to stay off so Vercel reads
+     `.vercel/output`.
+3. Add your content settings under **Settings → Environment Variables → Add
+   New…**: `HYGRAPH_ENDPOINT` (the Content API address). Without it the deployed
+   site falls back to its labelled demonstration content. Values are read on the
+   server at request time, so a change needs a redeploy to appear.
+4. Deploy. Every page is rendered on Vercel Functions, including the pages that
+   read your publications.
+
 ## Connect your own content
 
 Without any settings the portal shows clearly labelled demonstration content. To read your own publications, copy `.env.example` to `.env` and fill in the address of your content workspace:
